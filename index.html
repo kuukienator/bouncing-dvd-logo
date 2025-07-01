@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <title>Bouncing DVD Logo</title>
     <style>
         body {
             margin: 0;
@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container vhs-wrapper">
         <div class="dvd-logo">
             <svg  width="100%" height="100%" viewBox="0 0 1058.4 465.84" xmlns="http://www.w3.org/2000/svg">
                 <g>
@@ -34,16 +34,20 @@
         </div>
     </div>
     <script>
+        const backgroundColors = ['#14213d','#ede0d4']
+
+        const container = document.querySelector('.container');
         const DVDLogo = document.querySelector('.dvd-logo');
 
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+        const windowWidth = container.clientWidth;
+        const windowHeight = container.clientHeight;
 
         const dvdLogoWidth = DVDLogo.getBoundingClientRect().width;
         const dvdLogoHeight = DVDLogo.getBoundingClientRect().height;
 
         const safeArea = Math.max(dvdLogoWidth, dvdLogoHeight) * 0.5;
 
+        let backgroundColorIndex = 0;
         let dvdX = 0;
         let dvdY = 0;
         let speed = 2.25;
@@ -69,6 +73,8 @@
 
         DVDLogo.style.left = `${dvdX}px`;
         DVDLogo.style.top = `${dvdY}px`;
+
+        container.style.backgroundColor = backgroundColors[backgroundColorIndex];
 
         function animate() {
             let color;
@@ -100,6 +106,11 @@
 
             requestAnimationFrame(animate);
         }
+
+        container.addEventListener("click", function () {
+            backgroundColorIndex  = (backgroundColorIndex + 1) % backgroundColors.length;
+            container.style.backgroundColor = backgroundColors[backgroundColorIndex];
+        });
 
         animate();
     </script>
