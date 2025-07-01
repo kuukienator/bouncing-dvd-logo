@@ -12,8 +12,8 @@
         }
         .container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 100dvw;
+            height: 100dvh;
         }
 
         .dvd-logo {
@@ -39,9 +39,6 @@
         const container = document.querySelector('.container');
         const DVDLogo = document.querySelector('.dvd-logo');
 
-        const windowWidth = container.clientWidth;
-        const windowHeight = container.clientHeight;
-
         const dvdLogoWidth = DVDLogo.getBoundingClientRect().width;
         const dvdLogoHeight = DVDLogo.getBoundingClientRect().height;
 
@@ -53,6 +50,9 @@
         let speed = 2.25;
         let directionX = 1;
         let directionY = 1;
+
+        let containerWidth = container.clientWidth;
+        let containerHeight = container.clientHeight;
 
         function getRandomIntExclusive(min, max) {
             min = Math.ceil(min) + 1;
@@ -68,8 +68,8 @@
             }
         }
 
-        dvdX = getRandomIntExclusive(safeArea, windowWidth - safeArea);
-        dvdY = getRandomIntExclusive(safeArea, windowHeight- safeArea);
+        dvdX = getRandomIntExclusive(safeArea, containerWidth - safeArea);
+        dvdY = getRandomIntExclusive(safeArea, containerHeight- safeArea);
 
         DVDLogo.style.left = `${dvdX}px`;
         DVDLogo.style.top = `${dvdY}px`;
@@ -78,8 +78,8 @@
 
         function animate() {
             let color;
-            const intersectingX = (dvdX + dvdLogoWidth) >= windowWidth || dvdX < 0;
-            const intersectingY = (dvdY + dvdLogoHeight) >= windowHeight || dvdY < 0;
+            const intersectingX = (dvdX + dvdLogoWidth) >= containerWidth || dvdX < 0;
+            const intersectingY = (dvdY + dvdLogoHeight) >= containerHeight || dvdY < 0;
 
             if (intersectingX) {
                 color = getRandomColor();
@@ -111,6 +111,16 @@
             backgroundColorIndex  = (backgroundColorIndex + 1) % backgroundColors.length;
             container.style.backgroundColor = backgroundColors[backgroundColorIndex];
         });
+
+        const observer = new ResizeObserver(function (entries) {
+            for (let entry of entries) {
+                const { width, height } = entry.contentRect;
+                containerWidth = width;
+                containerHeight = height;
+            }
+        });
+
+        observer.observe(container);
 
         animate();
     </script>
