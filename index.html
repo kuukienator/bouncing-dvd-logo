@@ -71,7 +71,7 @@
             const dvdLogoWidth = 0;
             const dvdLogoHeight = 0;
 
-            const safeArea = Math.max(dvdLogoWidth, dvdLogoHeight) * 0.5;
+            const safeArea = Math.max(dvdLogoWidth, dvdLogoHeight) * 1.2;
 
             let dvdX = 0;
             let dvdY = 0;
@@ -80,7 +80,7 @@
             let directionY = [1, -1][Math.floor(Math.random() * 2)];
 
             dvdX = getRandomIntExclusive(safeArea, containerWidth - safeArea);
-            dvdY = getRandomIntExclusive(safeArea, containerHeight- safeArea);
+            dvdY = getRandomIntExclusive(safeArea, containerHeight - safeArea);
 
             DVDLogo.style.left = `${dvdX}px`;
             DVDLogo.style.top = `${dvdY}px`;
