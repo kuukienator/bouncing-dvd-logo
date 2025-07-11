@@ -53,6 +53,30 @@
         .hidden {
             display: none;
         }
+        .button {
+            font-family: monospace;
+            background: rgb(32, 35, 200);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 0.5rem;
+        }
+        .button:hover {
+            background: white;
+            color: black;
+        }
+        .information-button {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+        }
+        .fullscreen-button {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -63,6 +87,8 @@
             <div><span class="dvd-logos">1</span> logos</div>
         </div>
     </div>
+    <button class="button information-button">i</button>
+    <button class="button fullscreen-button">f</button>
     <footer><a href="https://ema.codes" target="_blank">2025 ❤️ ema.codes</a></footer>
     <script>
         const backgroundColors = ['#14213d','#ede0d4'];
@@ -75,6 +101,8 @@
         const hitsLabel = document.querySelector('.hits');
         const dvdLogosLabel = document.querySelector('.dvd-logos');
         const footer = document.querySelector('footer');
+        const fullscreenButton = document.querySelector('.fullscreen-button');
+        const informationButton = document.querySelector('.information-button');
         let containerWidth = container.clientWidth;
         let containerHeight = container.clientHeight;
         let hits = 0;
@@ -211,10 +239,31 @@
             requestAnimationFrame(animate);
         }
 
+        const toggleFullscreen = () => {
+            if (!document.fullscreenElement) {
+                document.body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        const toggleInformation = () => {
+            counterContainer.classList.toggle("hidden");
+            footer.classList.toggle("hidden");
+        }
+
         container.addEventListener("click", function () {
-            // backgroundColorIndex  = (backgroundColorIndex + 1) % backgroundColors.length;
+            // backgroundColorIndex = (backgroundColorIndex + 1) % backgroundColors.length;
             // container.style.backgroundColor = backgroundColors[backgroundColorIndex];
             addDVDLogo();
+        });
+
+        fullscreenButton.addEventListener("click", () => {
+            toggleFullscreen();
+        });
+
+        informationButton.addEventListener("click", () => {
+            toggleInformation();
         });
 
         const observer = new ResizeObserver(function (entries) {
@@ -227,16 +276,11 @@
 
         window.addEventListener("keypress", (e) => {
             if (e.key === "h") {
-                counterContainer.classList.toggle("hidden");
-                footer.classList.toggle("hidden");
+                toggleInformation()
             }
 
             if (e.key === "f") {
-                if (!document.fullscreenElement) {
-                    document.body.requestFullscreen();
-                } else {
-                    document.exitFullscreen();
-                }
+                toggleFullscreen();
             }
         })
 
