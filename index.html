@@ -93,6 +93,7 @@
     <script>
         const backgroundColors = ['#14213d','#ede0d4'];
         const DVDLogos = [];
+        const embedMode = window.location.search.includes('embed=1');
 
         const container = document.querySelector('.container');
         const counterContainer = document.querySelector('.counter');
@@ -285,6 +286,12 @@
         })
 
         observer.observe(container);
+
+        if(embedMode) {
+            toggleInformation(true);
+            fullscreenButton.classList.add("hidden");
+            informationButton.classList.add("hidden");
+        }
 
         addDVDLogo();
         animate();
