@@ -51,6 +51,9 @@
             background: white;
             color: black;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -58,6 +61,7 @@
         <div class="counter">
             <div><span class="hits">0</span> hits</div>
             <div><span class="perfect-corners">0</span> perfect corners (<span class="percentage">0</span>%)</div>
+            <div><span class="dvd-logos">1</span> logos</div>
         </div>
     </div>
     <footer><a href="https://ema.codes" target="_blank">2025 ❤️ ema.codes</a></footer>
@@ -66,9 +70,12 @@
         const DVDLogos = [];
 
         const container = document.querySelector('.container');
+        const counterContainer = document.querySelector('.counter');
         const perfectCornersLabel = document.querySelector('.perfect-corners');
         const percentageLabel = document.querySelector('.percentage');
         const hitsLabel = document.querySelector('.hits');
+        const dvdLogosLabel = document.querySelector('.dvd-logos');
+        const footer = document.querySelector('footer');
         let containerWidth = container.clientWidth;
         let containerHeight = container.clientHeight;
         let hits = 0;
@@ -85,6 +92,7 @@
             const DVDLogo = createDVDLogo();
             container.appendChild(DVDLogo.element);
             DVDLogos.push(DVDLogo);
+            dvdLogosLabel.innerText = DVDLogos.length;
         }
 
         function getRandomIntExclusive(min, max) {
@@ -145,6 +153,8 @@
         }
 
         function animate() {
+            let updateHits = false;
+            let updatePerfectCorners = false;
             DVDLogos.forEach((entry) => {
                 if (entry.width === 0 || entry.height === 0) {
                     entry.width = entry.element.getBoundingClientRect().width;
@@ -157,10 +167,12 @@
 
                 if (intersectingX || intersectingY) {
                     hits++;
+                    updateHits = true;
                 }
 
                 if (intersectingX && intersectingY) {
                     perfectCorners++;
+                    updatePerfectCorners = true;
                 }
 
                 if (intersectingX) {
@@ -187,9 +199,15 @@
 
             });
 
-            perfectCornersLabel.innerText = perfectCorners;
-            hitsLabel.innerText = hits;
-            percentageLabel.innerText = hits !== 0 ? Math.round((perfectCorners / hits) * 100) : 0;
+            if (updatePerfectCorners) {
+                perfectCornersLabel.innerText = perfectCorners;
+            }
+            if (updateHits) {
+                hitsLabel.innerText = hits;
+            }
+            if (updateHits || updatePerfectCorners) {
+                percentageLabel.innerText = hits !== 0 ? Math.round((perfectCorners / hits) * 100) : 0;
+            }
 
             requestAnimationFrame(animate);
         }
@@ -207,6 +225,21 @@
                 containerHeight = height;
             }
         });
+
+        window.addEventListener("keypress", (e) => {
+            if (e.key === "h") {
+                counterContainer.classList.toggle("hidden");
+                footer.classList.toggle("hidden");
+            }
+
+            if (e.key === "f") {
+                if (!document.fullscreenElement) {
+                    document.body.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        })
 
         observer.observe(container);
 
