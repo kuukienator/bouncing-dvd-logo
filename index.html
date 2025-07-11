@@ -91,9 +91,11 @@
     <button class="button fullscreen-button">f</button>
     <footer><a href="https://ema.codes" target="_blank">2025 ❤️ ema.codes</a></footer>
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const embedMode = urlParams.get('embed') === '1';
         const backgroundColors = ['#14213d','#ede0d4'];
         const DVDLogos = [];
-        const embedMode = window.location.search.includes('embed=1');
+        const backgroundColor = urlParams.has('bg_color_hex') ? `#${urlParams.get("bg_color_hex")}` : backgroundColors[0];
 
         const container = document.querySelector('.container');
         const counterContainer = document.querySelector('.counter');
@@ -108,8 +110,6 @@
         let containerHeight = container.clientHeight;
         let hits = 0;
         let perfectCorners = 0;
-
-        let backgroundColorIndex = 0;
 
         const dvdLogoWidth = 110;
         const dvdLogoHeight = 48;
@@ -142,7 +142,7 @@
             }
         }
 
-        container.style.backgroundColor = backgroundColors[backgroundColorIndex];
+        container.style.backgroundColor = backgroundColor;
 
         function createDVDLogo() {
             const DVDLogo = document.createElement("div");
